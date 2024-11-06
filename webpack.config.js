@@ -1,8 +1,11 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+import path from "path";
+import { fileURLToPath } from "url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import webpack from 'webpack';
 
-module.exports = {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default {
   mode: 'development',
   entry: './src/index.ts',
   devtool: 'source-map',
@@ -39,21 +42,24 @@ module.exports = {
   },
   output: {
     filename: 'mgnify-sourmash-component.js',
+    module: true,
+    library: { type: "module" },
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   plugins: [
+      /*
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       title: 'MGnify Sourmash Component - EBI',
     }),
+    */
     new webpack.ProvidePlugin({
-      Buffer: ['buffer', 'Buffer'],
-      process: 'process/browser',
       util: 'util',
-      stream: 'stream',
     }),
   ],
   experiments: {
     syncWebAssembly: true,
+    outputModule: true,
   },
 };
